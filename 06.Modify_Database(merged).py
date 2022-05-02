@@ -11,10 +11,18 @@ def isnan(value):
     except:
         return False
 
+
+def unique(list1):
+    unique_list = []
+    for x in list1:
+        if x not in unique_list:
+            unique_list.append(x)
+    return unique_list
+
 path = os.getcwd()
 files = os.listdir(path)
 files_xlsx = [z for z in files if z[-4:] == 'xlsx']
-df=pd.read_excel(r"C:\Users\sina.kian\Desktop\New folder (2)\New folder\Results.xlsx")
+df=pd.read_excel(r"C:\Users\sina.kian\Desktop\code debug\2022_04_12\Output\ARISTON_DB.xlsx")
 COUNT=0
 for z in files_xlsx:
     dp=pd.read_excel(z, 'Location')
@@ -99,6 +107,14 @@ for z in files_xlsx:
             dm['accuracy'][i]=1
     dm['Total PD'] = dm.loc[0 : L-1,['building', 'machinery','stock']].sum(axis = 1)
     dm=dm[['update', 'date', 'N', 'Company', 'comp.(code)', 'Locations', 'site', 'state','country', 'zip code', 'Longitude', 'Latitude', 'accuracy', 'site type', 'Active/Deactive', 'Activity', 'Rental / Property', 'third party use', 'Area', 'building', 'machinery', 'building & machinery', 'stock', 'improvement of third party goods', 'molds', 'stock/content', 'Total PD', 'contr. margin', 'Total', 'Currency']]
+    for lll in dm.index:
+        if type(dm['Locations'][lll])==str:
+            dm['Company'][lll]=dm['Company'][lll].capitalize()
+            dm['Company'][lll]=re.sub('\.', '',dm['Company'][lll])
+            dm['Company'][lll]=re.sub(',', '',dm['Company'][lll])
+        if type(dm['Locations'][lll])==str:
+            dm['Locations'][lll]=dm['Locations'][lll].capitalize()
+            dm['Locations'][lll]=re.sub('\.', '',dm['Locations'][lll])
     dn=pd.DataFrame()
     #ds_row = pd.Series([0]*30,index=dm.columns)
     ds_row = pd.Series(index=dm.columns)
@@ -123,6 +139,18 @@ for z in files_xlsx:
                         if isnan(mm)==False:
                             if mm not in AAA:
                                 AAA.append(mm)
+                    z=[]
+                    for j in range(0,len(AAA)):
+                        for i in range (0,len(AAA[j].split('/'))):
+                            z.append(AAA[j].split('/')[i])
+                    ZZZ=unique(z)
+                    if ZZZ==[]:
+                        ANS='-'
+                    else:
+                        ANS=str(ZZZ[0])
+                        if len(ZZZ)>1:
+                            for i in range(1,len(ZZZ)):
+                                ANS=ANS+'/'+str(ZZZ[i])
                     print(dll[['machinery','stock']])
                     ds['building'][jj]=dll['building'].sum()
                     ds['machinery'][jj]=dll['machinery'].sum()
@@ -133,7 +161,7 @@ for z in files_xlsx:
                     if AAA==[]:
                         ds['Activity'][jj]='-'
                     else:
-                        ds['Activity'][jj]=AAA
+                        ds['Activity'][jj]=ANS
                     if '[\''  in str(ds['Activity'][jj]):
                         ds['Activity'][jj]=re.sub('\[\'', '',str(ds['Activity'][jj]))
                     if '\']'  in str(ds['Activity'][jj]):
@@ -150,19 +178,20 @@ for z in files_xlsx:
         a_row = pd.Series(dm.loc[i],index=df.columns)
         row_df = pd.DataFrame([a_row])
         df = pd.concat([df,row_df])
+    df.index=range(0,len(df))
     OH=[]
+    LL=len(dff)
     c_i=0
     for i in dm['Locations']:
         c_j=0
         for j in dff['Locations']:
             if (i==j) and (dm['Company'][c_i]==dff['Company'][c_j]):
-                df['Validity'][c_j]='Inv'+str(len(dff)+c_i-1)
-                df['Validity'][len(dff)+c_i-1]='V'+str(c_j)
+                df['Validity'][c_j]='Inv'+str(len(dff)+c_i)
+                df['Validity'][LL+c_i]='V'+str(c_j)
             c_j+=1
         c_i+=1
         OH=[]
     OH=[]
-    df.index=range(0,len(df))
     df=df[['Validity', 'update', 'date', 'N', 'Company', 'comp.(code)', 'Locations', 'site', 'state','country', 'zip code', 'Longitude', 'Latitude', 'accuracy', 'site type', 'Active/Deactive', 'Activity', 'Rental / Property', 'third party use', 'Area', 'building', 'machinery', 'building & machinery', 'stock', 'improvement of third party goods', 'molds', 'stock/content', 'Total PD', 'contr. margin', 'Total', 'Currency']]
     COUNT+=1
     print(1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111)
@@ -185,5 +214,5 @@ for z in files_xlsx:
     print(1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111)
     print(1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111)
 
-file_name='ARISTON_DB.xlsx'
+file_name='ARISTON_DB_2022_05_02test.xlsx'
 df.to_excel(file_name)
