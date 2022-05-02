@@ -1,7 +1,8 @@
 #Before starting replace '\ ' with '\' in 'Items' column.
 import pandas as pd
+import re
 import math
-df=pd.read_excel(r"C:\Users\sina.kian\Desktop\New folder\base\Property Proposta allocazione Ariston 20.01.22_UK in FOS VER8.xlsx")
+df=pd.read_excel(r"C:\Users\sina.kian\Desktop\code debug\New folder\Property Proposta allocazione Ariston 20.01.22_UK in FOS VER8.xlsx")
 
 #organize columns and proper length
 
@@ -249,8 +250,15 @@ df1['Currency']=['Euro']*len(df1)
 df1['accuracy']=['-']*len(df1)
 df1['Validity']=["V"]*len(df1)
 df1=df1[['Validity','update', 'date', 'N', 'Company', 'comp.(code)', 'Locations', 'site', 'state','country', 'zip code', 'Longitude', 'Latitude', 'accuracy', 'site type', 'Active/Deactive', 'Activity', 'Rental / Property', 'third party use', 'Area', 'building', 'machinery', 'building & machinery', 'stock', 'improvement of third party goods', 'molds', 'stock/content', 'Total PD', 'contr. margin', 'Total', 'Currency']]
+for i in df1.index:
+    df1['Company'][i]=df1['Company'][i].capitalize()
+    df1['Company'][i]=re.sub('\.', '',df1['Company'][i])
+    df1['Company'][i]=re.sub(',', '',df1['Company'][i])
+    df1['Locations'][i]=df1['Locations'][i].capitalize()
+    df1['Locations'][i]=re.sub('\.', '',df1['Locations'][i])
 
 
-file_name='Results.xlsx'
+
+file_name='Resultstest.xlsx'
 
 df1.to_excel(file_name)
