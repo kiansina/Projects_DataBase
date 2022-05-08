@@ -7,7 +7,7 @@
 Organize the main database of Ariston and transform it to the structure we need.
 *** BEFORE USING THE CODE replace '\ ' with '\' in 'Items' column.
 *** PLEASE KEEP A STANDARD CODIFICATION FOR EXAMPLE WE SHOULD EVADE HAVING BOTH "UK" and "ENGLAND"
-*** ABOVE WARNING IS ALSO APPLICABLE FOR THE NAMES. WE SHOULD EVADE HAVING BOTH "Elco Heating Solutions Ltd" and "Elco Heating Solutions Limited"
+*** ABOVE WARNING IS ALSO APPLICABLE FOR THE NAMES. WE SHOULD EVADE HAVING BOTH "**** *** Solutions Ltd" and "**** *** Solutions Limited"
 
 06.Modify_Database(merged).py=>
 
@@ -18,8 +18,8 @@ Organize and clear the new update files sent by company. first part is a prepari
 Examples:
 
 Input excel files:
-1) "Property Data Base Ariston 07.02.22" as the main database
-2) "Ariston_Property_Location_2022 - Completed" as the new update file
+1) "Property Data Base *** 07.02.22" as the main database
+2) "***_Property_Location_2022 - Completed" as the new update file
 
 output excel files:
 1) "Results" the suitable transformation of Input 1
